@@ -118,9 +118,9 @@ make
 sudo make install
 
 # libfdk_aac - AAC is an audio encoder.
-echo; echo; echo; echo "*************** Installing 'libfdk_aac' ***************"; echo
+echo "Downloading 'libfdk_aac' ..."
 cd $sources_path
-git clone --depth 1 git://github.com/mstorsjo/fdk-aac.git
+git clone --depth 1 https://github.com/mstorsjo/fdk-aac.git
 cd fdk-aac
 autoreconf -fiv
 ./configure --prefix="$HOME/ffmpeg_build" --disable-shared
@@ -128,7 +128,6 @@ autoreconf -fiv
 make
 sudo make install
 make distclean
-
 
 # libmp3lame - is an MP3 audio encoder.
 echo; echo; echo; echo "*************** Installing 'libmp3lame' ***************"; echo
