@@ -142,9 +142,10 @@ sudo make install
 make distclean
 
 # libopus - Opus audio decoder and encoder.
-echo; echo; echo; echo "*************** Installing 'libopus' ***************"; echo
+echo "Downloading 'libopus' ..."
 cd $sources_path
-wget http://downloads.xiph.org/releases/opus/opus-1.3.1.tar.gz    # if ver 1.3.1 does not work, try 1.0.3
+wget http://downloads.xiph.org/releases/opus/opus-1.3.1.tar.gz
+# if ver 1.3.1 does not work, try 1.0.3
 tar xzvf opus-1.3.1.tar.gz
 cd opus-1.3.1
 #./configure --prefix="$HOME/ffmpeg_build" --disable-shared
@@ -152,7 +153,6 @@ cd opus-1.3.1
 make
 sudo make install
 make distclean
-
 
 # libogg - Ogg bitstream library. Required by libtheora and libvorbis.
 echo; echo; echo; echo "*************** Installing 'libogg' ***************"; echo
