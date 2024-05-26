@@ -73,7 +73,6 @@ make
 sudo make install
 COMMENT
 
-<< 'COMMENT2'
 # Yasm - is an assembler used by x264 and FFmpeg
 echo "Downloading 'yasm' ..."
 cd $SOURCES_PATH
@@ -189,20 +188,20 @@ cd libvpx
 make
 sudo make install
 make clean
-COMMENT2
 
 # libtheora - Theora video encoder. Requires libogg.
-echo; echo "*************** Installing 'libtheora' ***************"; echo
-cd $sources_path
+echo "Downloading 'libtheora' ..."
+cd $SOURCES_PATH
 wget http://downloads.xiph.org/releases/theora/libtheora-1.1.1.tar.gz
 tar xzvf libtheora-1.1.1.tar.gz
 cd libtheora-1.1.1
-./configure --prefix="$HOME/ffmpeg_build" --with-ogg="$HOME/ffmpeg_build" --disable-examples --disable-shared --disable-sdltest --disable-vorbistest
+./configure --prefix="$HOME/ffmpeg_build" --with-ogg="$HOME/ffmpeg_build" \
+			--disable-examples --disable-shared --disable-sdltest \
+			--disable-vorbistest
 make
 sudo make install
 make distclean
 # Add --enable-libtheora to your ffmpeg ./configure.
-#comment
 
 if [[ $install_error -eq 1 ]]; then
     echo; echo; echo
