@@ -178,12 +178,16 @@ make distclean
 # libvpx - VP8/VP9 video encoder.
 echo "Downloading 'libvpx' ..."
 cd $SOURCES_PATH
-git clone --depth 1 https://chromium.googlesource.com/webm/libvpx
+#git clone --depth 1 https://chromium.googlesource.com/webm/libvpx
+git clone --depth 1 https://chromium.googlesource.com/webm/libvpx.git
 cd libvpx
-./configure --prefix="$HOME/ffmpeg_build" --disable-examples
+#./configure --prefix="$HOME/ffmpeg_build" --disable-examples
+./configure --prefix="$HOME/ffmpeg_build" --disable-examples \
+			--disable-unit-tests --enable-vp9-highbitdepth --as=yasm
+
 make
 sudo make install
-make clean
+#make clean
 
 # libtheora - Theora video encoder. Requires libogg.
 echo "Downloading 'libtheora' ..."
@@ -199,6 +203,7 @@ sudo make install
 make distclean
 # Add --enable-libtheora to your ffmpeg ./configure.
 
+<< 'COMMENT'
 # FFmpeg
 echo "Downloading 'FFmpeg' ..."
 cd $SOURCES_PATH
@@ -207,11 +212,14 @@ if [ -d "ffmpeg" ]; then
     rm -fr "ffmpeg"
 fi
 
-git clone --depth 1 git://source.ffmpeg.org/ffmpeg
+#git clone --depth 1 git://source.ffmpeg.org/ffmpeg
+curl -O -L https://ffmpeg.org/releases/ffmpeg-snapshot.tar.bz2
+tar xjvf ffmpeg-snapshot.tar.bz2
 cd ffmpeg
 #### ejecutar ./configure --help para ver que nuevas opciones se tienen de configurar.
-PATH="$HOME/bin:$PATH" PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" \
-./configure \
+#PATH="$HOME/bin:$PATH" PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig"
+#export PKG_CONFIG_PATH="/usr/local/lib/pkgconfig"
+PATH="$HOME/bin:$PATH" PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
   --prefix="$HOME/ffmpeg_build" \
   --pkg-config-flags="--static" \
   --extra-cflags="-I$HOME/ffmpeg_build/include" \
@@ -224,12 +232,14 @@ PATH="$HOME/bin:$PATH" PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" \
   --enable-libfreetype \
   --enable-libmp3lame \
   --enable-libopus \
-  --enable-libvpx \
   --enable-libx264 \
-  --enable-libx265 \
   --enable-nonfree \
   --enable-libtheora \
-  --enable-libspeex
+  --enable-libspeex \
+  --enable-libdc1394
+  #  --enable-libvpx
+  #  --enable-libx265 \
+
 #PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig"
 #export PKG_CONFIG_PATH
 #./configure --prefix="$HOME/ffmpeg_build" --extra-cflags="-I$HOME/ffmpeg_build/include" --extra-ldflags="-L$HOME/ffmpeg_build/lib" --bindir="$HOME/bin" --extra-libs="-ldl" --enable-gpl --enable-nonfree --enable-libfdk_aac --enable-libmp3lame --enable-libopus --enable-libvorbis --enable-libvpx --enable-libx264 --enable-libfreetype --enable-libspeex --enable-libtheora
@@ -239,6 +249,7 @@ make distclean
 hash -d ffmpeg
 #hash -r
 . ~/.bash_profile
+COMMENT
 
 << 'comment'
 Updating
