@@ -166,7 +166,7 @@ sudo make install
 make distclean
 
 # libvorbis - Vorbis audio encoder. Requires libogg.
-echo; echo; echo; echo "*************** Installing 'libvorbis' ***************"; echo
+echo "Downloading 'libvorbis' ..."
 cd $sources_path
 wget http://downloads.xiph.org/releases/vorbis/libvorbis-1.3.7.tar.gz     # if ver 1.3.7 does not work, try 1.3.3
 tar xzvf libvorbis-1.3.7.tar.gz
@@ -175,7 +175,6 @@ cd libvorbis-1.3.7
 make
 sudo make install
 make distclean
-
 
 # libvpx - VP8/VP9 video encoder.
 echo; echo; echo; echo "*************** Installing 'libvpx' ***************"; echo
