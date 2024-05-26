@@ -1,56 +1,48 @@
 #!/bin/bash
 
-<< comment
-Instalación de ffmpeg
-Script para instalar ffmpeg desde código fuente, instalando, además, las dependencias necesarias.
-Se debe correr como root o ingresar credenciales de sudo durante la ejecución
-comment
+# FFmpeg and needed dependencies installation from source
+# Must be executed using admin credentials
+# At the end of installation all binaries will be at /home/$USER/bin
 
-: '
-Al final de la instalación, los archivos ejecutables estarán en la ruta:
-/home/potro/bin
-'
 
 ### Variables
-path_dir="/home/$USER/Downloads/__For_Install/Packages/Sources/FFMPEG"
-sources_path=$path_dir"/current_version"
-logs_path=$path_dir"/logs"
-install="sudo dnf install -y "
-log_name="Installation_errors"
-log_date=$(date +%y%m%d-%H%M)
-log_full_path=$logs_path/$log_name.$log_date
+INSTALL="sudo dnf install -y "
+LOG_PREFIX="installation_errors"
+LOG_DATE=$(date +%y%m%d-%H%M)
+PATH_DIR="/home/$USER/Downloads/FFmpeg"
+SOURCES_PATH=$PATH_DIR"/Sources"
+LOG_PATH=$PATH_DIR"/Logs"
+LOG_NAME="$LOG_PATH/$LOG_PREFIX_$LOG_DATE"
 install_error=0
 
 
 ### Functions
-function salir {
+function Exit {
 	popd 1> /dev/null
-	echo
-	echo Exiting the program ...
-	echo
+	echo; echo Exiting the program ...; echo
 	exit
 }
 
-function install_app {
-	app_name=$1; echo "*************** Installing \"$app_name\" ***************"
-	echo
-	$install $1; error=$( echo $? )
-	if [[ $error -ne 0 ]]; then install_error=1
+function App_install {
+	app_name=$1; echo "Installing \"$app_name\" ..."; echo
+	$INSTALL $1; error=$( echo $? )
+	if [ $error -ne 0 ]; then install_error=1
 	    echo; echo "ERRORS found when installing \"$app_name\""; echo; echo
-	    echo >> $log_full_path; echo "ERRORS found when installing \"$app_name\"" >> $log_full_path; echo >> $log_full_path; echo >> $log_full_path
+	    echo >> $LOG_NAME; echo "ERRORS found when installing \"$app_name\"" >> $LOG_NAME; echo >> $LOG_NAME; echo >> $LOG_NAME
 	fi
     echo; echo
 }
 
 
 ### Begin
-if [[ !$sources_path ]]; then
-    mkdir -p $sources_path
+if [ !$SOURCES_PATH ]; then
+    mkdir -p $SOURCES_PATH
 fi
 
-pushd "$sources_path" 1> /dev/null
+pushd "$SOURCES_PATH" 1> /dev/null
 
-echo -e "\t\t\t\tInstalliing FFmpeg\n"
+clear; echo -e "\t\t\t\tInstalliing FFmpeg\n"
+Exit
 << comment
 # Installing needed dependencies
 echo; echo; echo; echo "*************** Installing needed dependencies ***************"; echo; echo
@@ -289,3 +281,9 @@ make distclean
 git pull
 # Then run ./configure, make, and make install as shown in the Install FFmpeg section
 comment
+
+
+
+clear
+echo $INSTALL $LOG_PREFIX $LOG_DATE $PATH_DIR $SOURCES_PATH $LOG_PATH $LOG_NAME $install_error
+Exit
