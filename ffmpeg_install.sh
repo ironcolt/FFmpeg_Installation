@@ -26,7 +26,6 @@ function App_install {
 	app_name=$1; echo "Installing \"$app_name\" ..."; echo
 	$INSTALL $1; error=$( echo $? )
 	if [ $error -ne 0 ]; then install_error=1
-		#chown potro:potro $LOG_NAME
 	    echo; echo "ERRORS found when installing \"$app_name\""; echo; echo
 	    echo >> $LOG_NAME; echo "ERRORS found when installing \"$app_name\"" >> $LOG_NAME; echo >> $LOG_NAME; echo >> $LOG_NAME
 	fi
@@ -35,8 +34,7 @@ function App_install {
 
 
 ### Begin
-time
-
+# Checks if paths are already created
 if [ !$SOURCES_PATH ]; then
     mkdir -p $SOURCES_PATH
 fi
@@ -44,7 +42,6 @@ fi
 if [ !$LOGS_PATH ]; then
     mkdir -p $LOGS_PATH
 fi
-sudo chown potro:potro $SOURCES_PATH $LOGS_PATH
 
 pushd "$SOURCES_PATH" 1> /dev/null
 
@@ -201,7 +198,6 @@ make
 sudo make install
 make distclean
 # Add --enable-libtheora to your ffmpeg ./configure.
-Exit
 
 # FFmpeg
 echo "Downloading 'FFmpeg' ..."
