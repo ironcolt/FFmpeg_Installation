@@ -155,7 +155,7 @@ sudo make install
 make distclean
 
 # libogg - Ogg bitstream library. Required by libtheora and libvorbis.
-echo; echo; echo; echo "*************** Installing 'libogg' ***************"; echo
+echo "Downloading 'libogg' ..."
 cd $sources_path
 wget http://downloads.xiph.org/releases/ogg/libogg-1.3.5.tar.gz   # if ver 1.3.5 does not work, try 1.3.1
 tar xzvf libogg-1.3.5.tar.gz
@@ -164,7 +164,6 @@ cd libogg-1.3.5
 make
 sudo make install
 make distclean
-
 
 # libvorbis - Vorbis audio encoder. Requires libogg.
 echo; echo; echo; echo "*************** Installing 'libvorbis' ***************"; echo
