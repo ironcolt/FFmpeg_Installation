@@ -51,7 +51,10 @@ clear; echo -e "\t\t\t\tInstalliing FFmpeg\n"
 
 # Installing needed dependencies
 echo "Installing needed dependencies ..."; echo; echo
-dependencies="autoconf automake bzip2 bzip2-devel cmake gcc gcc-c++ git libtool make nasm pkgconfig zlib-devel libass-devel dirac-devel faac-devel lame-devel opencv-devel openjpeg-devel  gsm-devel  xvidcore-devel"
+dependencies="autoconf automake bzip2 bzip2-devel cmake gcc gcc-c++ git \
+			libtool make nasm pkgconfig zlib-devel libass-devel dirac-devel \
+			faac-devel lame-devel opencv-devel openjpeg-devel  gsm-devel  \
+			xvidcore-devel freetype-devel speex-devel"
 
 for app in $dependencies; do
      App_install $app
@@ -70,6 +73,7 @@ make
 sudo make install
 COMMENT
 
+<< 'COMMENT2'
 # Yasm - is an assembler used by x264 and FFmpeg
 echo "Downloading 'yasm' ..."
 cd $SOURCES_PATH
@@ -185,18 +189,7 @@ cd libvpx
 make
 sudo make install
 make clean
-
-# libfreetype - Font rendering library. Required for the drawtext video filter.
-#echo; echo; echo; echo "*************** Installing 'libfreetype' ***************"; echo
-echo; echo; install_app freetype-devel
-# Add --enable-libfreetype to your ffmpeg ./configure.
-
-
-# libspeex - Speex audio decoder and encoder.
-#echo; echo; echo; echo "*************** Installing 'speex-devel' ***************"; echo
-install_app speex-devel
-# Add --enable-libspeex to your ffmpeg ./configure.
-
+COMMENT2
 
 # libtheora - Theora video encoder. Requires libogg.
 echo; echo "*************** Installing 'libtheora' ***************"; echo
@@ -209,7 +202,7 @@ make
 sudo make install
 make distclean
 # Add --enable-libtheora to your ffmpeg ./configure.
-comment
+#comment
 
 if [[ $install_error -eq 1 ]]; then
     echo; echo; echo
@@ -291,3 +284,16 @@ comment
 clear
 echo $INSTALL $LOG_PREFIX $LOG_DATE $PATH_DIR $SOURCES_PATH $LOGS_PATH $LOG_NAME $install_error
 ls -hal /home/potro/Downloads/FFmpeg/
+
+<< 'COMMENT'
+# libfreetype - Font rendering library. Required for the drawtext video filter.
+#echo; echo; echo; echo "*************** Installing 'libfreetype' ***************"; echo
+echo; echo; install_app freetype-devel
+# Add --enable-libfreetype to your ffmpeg ./configure.
+
+
+# libspeex - Speex audio decoder and encoder.
+#echo; echo; echo; echo "*************** Installing 'speex-devel' ***************"; echo
+install_app speex-devel
+# Add --enable-libspeex to your ffmpeg ./configure.
+COMMENT
