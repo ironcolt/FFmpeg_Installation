@@ -112,6 +112,7 @@ fi
 cd "$dir"
 
 cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="$HOME/ffmpeg_build" -DENABLE_SHARED:bool=off ../../source
+
 # Agregar las opciones --enable-gpl --enable-libx265 en ffmpeg .configure
 make
 sudo make install
@@ -203,7 +204,6 @@ sudo make install
 make distclean
 # Add --enable-libtheora to your ffmpeg ./configure.
 
-<< 'COMMENT'
 # FFmpeg
 echo "Downloading 'FFmpeg' ..."
 cd $SOURCES_PATH
@@ -236,9 +236,9 @@ PATH="$HOME/bin:$PATH" PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./conf
   --enable-nonfree \
   --enable-libtheora \
   --enable-libspeex \
-  --enable-libdc1394
-  #  --enable-libvpx
-  #  --enable-libx265 \
+  --enable-libdc1394 \
+  --enable-libvpx
+  #--enable-libx265
 
 #PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig"
 #export PKG_CONFIG_PATH
@@ -246,10 +246,9 @@ PATH="$HOME/bin:$PATH" PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./conf
 make
 sudo make install
 make distclean
-hash -d ffmpeg
-#hash -r
+#hash -d ffmpeg
+hash -r	#finds ffmpeg
 . ~/.bash_profile
-COMMENT
 
 << 'comment'
 Updating
