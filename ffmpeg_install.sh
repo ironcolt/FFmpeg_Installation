@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # FFmpeg and needed dependencies installation from source
-# At the end of installation all binaries will be at /home/$USER/bin
+# At the end of installation all binaries will be at /home/potro/bin
 
 
 ### Variables
@@ -13,6 +13,7 @@ SOURCES_PATH="$PATH_DIR"/Sources
 LOGS_PATH="$PATH_DIR"/Logs
 LOG_NAME="$LOGS_PATH"/"$LOG_PREFIX"_"$LOG_DATE"
 install_error=0
+BIN_PATH="/home/potro/bin"
 
 
 ### Functions
@@ -45,7 +46,7 @@ fi
 
 pushd "$SOURCES_PATH" 1> /dev/null
 
-clear; echo -e "\t\t\t\tInstalliing FFmpeg\n"
+clear; echo -e "\t\t\t\tInstalling FFmpeg\n"
 
 # Installing needed dependencies
 echo "Installing needed dependencies ..."; echo; echo
@@ -250,6 +251,11 @@ make distclean
 hash -r	#finds ffmpeg
 . ~/.bash_profile
 
+echo "Creating links for the new binaries ..."
+sudo ln -s $BIN_PATH/ffmpeg /usr/bin/ffmpegg
+sudo ln -s $BIN_PATH/ffprobe /usr/bin/ffprobeg
+sudo ln -s $BIN_PATH/ffplay /usr/bin/ffplayg
+
 << 'comment'
 Updating
 rm -rf ~/ffmpeg_build ~/bin/{ffmpeg,ffprobe,ffserver,lame,vsyasm,x264,yasm,ytasm}
@@ -280,29 +286,12 @@ git pull
 # Then run ./configure, make, and make install as shown in the Install FFmpeg section
 comment
 
-clear
-#echo $INSTALL $LOG_PREFIX $LOG_DATE $PATH_DIR $SOURCES_PATH $LOGS_PATH $LOG_NAME $install_error
-#ls -hal /home/potro/Downloads/FFmpeg/
-
 << 'COMMENT'
-# libfreetype - Font rendering library. Required for the drawtext video filter.
-#echo; echo; echo; echo "*************** Installing 'libfreetype' ***************"; echo
-echo; echo; install_app freetype-devel
-# Add --enable-libfreetype to your ffmpeg ./configure.
-
-
-# libspeex - Speex audio decoder and encoder.
-#echo; echo; echo; echo "*************** Installing 'speex-devel' ***************"; echo
-install_app speex-devel
-# Add --enable-libspeex to your ffmpeg ./configure.
-COMMENT
-
-<< 'COMMENT'
-if [[ $install_error -eq 1 ]]; then
+if [ $install_error -eq 1 ]; then
     echo; echo; echo
     printf '*%.0s' {1..105}; echo
     echo "There were errors when installing some apps"
-    echo "Please check the file \"$log_full_path\" for details"
+    echo "Please check the file \"$LOG_NAME\" for details"
     printf '*%.0s' {1..105}; echo
 fi
 COMMENT
