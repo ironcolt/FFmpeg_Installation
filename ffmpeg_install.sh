@@ -50,7 +50,6 @@ pushd "$SOURCES_PATH" 1> /dev/null
 clear; echo -e "\t\t\t\tInstalliing FFmpeg\n"
 
 # Installing needed dependencies
-#echo; echo; echo;
 echo "Installing needed dependencies ..."; echo; echo
 dependencies="autoconf automake bzip2 bzip2-devel cmake gcc gcc-c++ git libtool make nasm pkgconfig zlib-devel libass-devel dirac-devel faac-devel lame-devel opencv-devel openjpeg-devel  gsm-devel  xvidcore-devel"
 
@@ -58,21 +57,23 @@ for app in $dependencies; do
      App_install $app
 done
 
+<< 'COMMENT'
 # NASM - An assembler used by some libraries. Highly recommended or your resulting build may be very slow.
 #echo; echo; echo; echo "*************** Installing 'NASM' ***************"; echo
-echo "Downloading 'NASM' ..."
+echo "Downloading 'nasm' ..."
 cd $SOURCES_PATH
-curl -O -L https://www.nasm.us/pub/nasm/releasebuilds/2.16.03/nasm-2.16.03.tar.bz2
-tar xjvf nasm-2.16.03.tar.bz2
-cd nasm-2.16.03
+curl -O -L https://www.nasm.us/pub/nasm/releasebuilds/2.15.05/nasm-2.15.05.tar.bz2
+tar xjvf nasm-2.15.05.tar.bz2
+cd nasm-2.15.05
 ./autogen.sh
 ./configure --prefix="$HOME/ffmpeg_build" --bindir="$HOME/bin"
 make
 sudo make install
-Exit
+COMMENT
 
 # Yasm - is an assembler used by x264 and FFmpeg
-echo; echo; echo; echo "*************** Installing 'Yasm' ***************"; echo
+#echo; echo; echo; echo "*************** Installing 'Yasm' ***************"; echo
+echo "Downloading 'yasm' ..."
 cd $sources_path
 curl -O http://www.tortall.net/projects/yasm/releases/yasm-1.3.0.tar.gz
 # if ver 1.3.0 does not work, try 1.2.0
@@ -83,7 +84,7 @@ make
 sudo make install
 make distclean
 . ~/.bash_profile
-
+Exit
 
 # x264 - H.264 is a video encoder.
 echo; echo; echo; echo "*************** Installing 'x264' ***************"; echo
