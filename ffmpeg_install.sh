@@ -256,6 +256,15 @@ sudo ln -s $BIN_PATH/ffmpeg /usr/bin/ffmpegg
 sudo ln -s $BIN_PATH/ffprobe /usr/bin/ffprobeg
 sudo ln -s $BIN_PATH/ffplay /usr/bin/ffplayg
 
+if [ $install_error -ne 0 ]; then
+    echo; echo; echo
+    printf '*%.0s' {1..105}; echo
+    echo "There were errors when installing some apps"
+    echo "Please check the file \"$LOG_NAME\" for details"
+    printf '*%.0s' {1..105}; echo
+fi
+Exit
+
 << 'comment'
 Updating
 rm -rf ~/ffmpeg_build ~/bin/{ffmpeg,ffprobe,ffserver,lame,vsyasm,x264,yasm,ytasm}
@@ -285,13 +294,3 @@ make distclean
 git pull
 # Then run ./configure, make, and make install as shown in the Install FFmpeg section
 comment
-
-<< 'COMMENT'
-if [ $install_error -eq 1 ]; then
-    echo; echo; echo
-    printf '*%.0s' {1..105}; echo
-    echo "There were errors when installing some apps"
-    echo "Please check the file \"$LOG_NAME\" for details"
-    printf '*%.0s' {1..105}; echo
-fi
-COMMENT
