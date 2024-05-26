@@ -102,15 +102,20 @@ sudo make install
 make distclean
 
 # libx265 - H.265/HEVC video encoder.
-echo; echo; echo; echo "*************** Installing 'x265' ***************"; echo
-cd $sources_path
+echo "Downloading 'x265' ..."
+cd $SOURCES_PATH
 git clone --branch stable --depth 2 https://bitbucket.org/multicoreware/x265_git
-cd $sources_path/x265_git/build/linux
+
+dir="$SOURCES_PATH/x265_git/build/linux"	# dir is a temp name for install 265
+if [ ! -d $dir ]; then echo "No dir for x265"
+	mkdir -p "$dir"
+fi
+cd "$dir"
+
 cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="$HOME/ffmpeg_build" -DENABLE_SHARED:bool=off ../../source
 # Agregar las opciones --enable-gpl --enable-libx265 en ffmpeg .configure
 make
 sudo make install
-
 
 # libfdk_aac - AAC is an audio encoder.
 echo; echo; echo; echo "*************** Installing 'libfdk_aac' ***************"; echo
