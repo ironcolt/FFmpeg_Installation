@@ -1,14 +1,13 @@
 #!/bin/bash
 
 # FFmpeg and needed dependencies installation from source
-# Must be executed using admin credentials
 # At the end of installation all binaries will be at /home/$USER/bin
 
 
 ### Variables
 INSTALL="sudo dnf install -y "
 LOG_PREFIX="installation_errors"
-LOG_DATE=$(date +%y%m%d-%H%M)
+LOG_DATE=$(date +%y%m%d_%H%M)
 PATH_DIR="/home/potro/Downloads/FFmpeg"
 SOURCES_PATH="$PATH_DIR"/Sources
 LOGS_PATH="$PATH_DIR"/Logs
@@ -27,7 +26,7 @@ function App_install {
 	app_name=$1; echo "Installing \"$app_name\" ..."; echo
 	$INSTALL $1; error=$( echo $? )
 	if [ $error -ne 0 ]; then install_error=1
-		chown potro:potro $LOG_NAME
+		#chown potro:potro $LOG_NAME
 	    echo; echo "ERRORS found when installing \"$app_name\""; echo; echo
 	    echo >> $LOG_NAME; echo "ERRORS found when installing \"$app_name\"" >> $LOG_NAME; echo >> $LOG_NAME; echo >> $LOG_NAME
 	fi
@@ -36,6 +35,8 @@ function App_install {
 
 
 ### Begin
+time
+
 if [ !$SOURCES_PATH ]; then
     mkdir -p $SOURCES_PATH
 fi
@@ -60,7 +61,6 @@ for app in $dependencies; do
      App_install $app
 done
 
-<< 'COMMENT'
 # NASM - An assembler used by some libraries. Highly recommended or your resulting build may be very slow.
 echo "Downloading 'nasm' ..."
 cd $SOURCES_PATH
@@ -71,7 +71,6 @@ cd nasm-2.15.05
 ./configure --prefix="$HOME/ffmpeg_build" --bindir="$HOME/bin"
 make
 sudo make install
-COMMENT
 
 # Yasm - is an assembler used by x264 and FFmpeg
 echo "Downloading 'yasm' ..."
@@ -202,23 +201,16 @@ make
 sudo make install
 make distclean
 # Add --enable-libtheora to your ffmpeg ./configure.
-
-if [[ $install_error -eq 1 ]]; then
-    echo; echo; echo
-    printf '*%.0s' {1..105}; echo
-    echo "There were errors when installing some apps"
-    echo "Please check the file \"$log_full_path\" for details"
-    printf '*%.0s' {1..105}; echo
-fi
-salir
-
+Exit
 
 # FFmpeg
-echo; echo; echo; echo "*************** Installing 'FFmpeg' ***************"; echo
-cd $sources_path
-if [[ -d "ffmpeg" ]]; then
+echo "Downloading 'FFmpeg' ..."
+cd $SOURCES_PATH
+
+if [ -d "ffmpeg" ]; then
     rm -fr "ffmpeg"
 fi
+
 git clone --depth 1 git://source.ffmpeg.org/ffmpeg
 cd ffmpeg
 #### ejecutar ./configure --help para ver que nuevas opciones se tienen de configurar.
@@ -239,7 +231,9 @@ PATH="$HOME/bin:$PATH" PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" \
   --enable-libvpx \
   --enable-libx264 \
   --enable-libx265 \
-  --enable-nonfree
+  --enable-nonfree \
+  --enable-libtheora \
+  --enable-libspeex
 #PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig"
 #export PKG_CONFIG_PATH
 #./configure --prefix="$HOME/ffmpeg_build" --extra-cflags="-I$HOME/ffmpeg_build/include" --extra-ldflags="-L$HOME/ffmpeg_build/lib" --bindir="$HOME/bin" --extra-libs="-ldl" --enable-gpl --enable-nonfree --enable-libfdk_aac --enable-libmp3lame --enable-libopus --enable-libvorbis --enable-libvpx --enable-libx264 --enable-libfreetype --enable-libspeex --enable-libtheora
@@ -281,8 +275,8 @@ git pull
 comment
 
 clear
-echo $INSTALL $LOG_PREFIX $LOG_DATE $PATH_DIR $SOURCES_PATH $LOGS_PATH $LOG_NAME $install_error
-ls -hal /home/potro/Downloads/FFmpeg/
+#echo $INSTALL $LOG_PREFIX $LOG_DATE $PATH_DIR $SOURCES_PATH $LOGS_PATH $LOG_NAME $install_error
+#ls -hal /home/potro/Downloads/FFmpeg/
 
 << 'COMMENT'
 # libfreetype - Font rendering library. Required for the drawtext video filter.
@@ -295,4 +289,14 @@ echo; echo; install_app freetype-devel
 #echo; echo; echo; echo "*************** Installing 'speex-devel' ***************"; echo
 install_app speex-devel
 # Add --enable-libspeex to your ffmpeg ./configure.
+COMMENT
+
+<< 'COMMENT'
+if [[ $install_error -eq 1 ]]; then
+    echo; echo; echo
+    printf '*%.0s' {1..105}; echo
+    echo "There were errors when installing some apps"
+    echo "Please check the file \"$log_full_path\" for details"
+    printf '*%.0s' {1..105}; echo
+fi
 COMMENT
