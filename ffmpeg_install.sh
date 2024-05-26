@@ -72,7 +72,7 @@ COMMENT
 
 # Yasm - is an assembler used by x264 and FFmpeg
 echo "Downloading 'yasm' ..."
-cd $sources_path
+cd $SOURCES_PATH
 curl -O http://www.tortall.net/projects/yasm/releases/yasm-1.3.0.tar.gz
 # if ver 1.3.0 does not work, try 1.2.0
 tar xzvf yasm-1.3.0.tar.gz
@@ -85,7 +85,7 @@ make distclean
 
 # x264 - H.264 is a video encoder.
 echo "Downloading 'h264' ..."
-cd $sources_path
+cd $SOURCES_PATH
 
 if [ -d "x264" ]; then
     rm -fr "x264"
@@ -119,7 +119,7 @@ sudo make install
 
 # libfdk_aac - AAC is an audio encoder.
 echo "Downloading 'libfdk_aac' ..."
-cd $sources_path
+cd $SOURCES_PATH
 git clone --depth 1 https://github.com/mstorsjo/fdk-aac.git
 cd fdk-aac
 autoreconf -fiv
@@ -131,7 +131,7 @@ make distclean
 
 # libmp3lame - is an MP3 audio encoder.
 echo "Downloading 'libmp3lame' ..."
-cd $sources_path
+cd $SOURCES_PATH
 curl -L -O https://sourceforge.net/projects/lame/files/lame/3.100/lame-3.100.tar.gz     # if ver 3.100 does not work, try 3.99
 tar xzvf lame-3.100.tar.gz
 cd lame-3.100
@@ -143,7 +143,7 @@ make distclean
 
 # libopus - Opus audio decoder and encoder.
 echo "Downloading 'libopus' ..."
-cd $sources_path
+cd $SOURCES_PATH
 wget http://downloads.xiph.org/releases/opus/opus-1.3.1.tar.gz
 # if ver 1.3.1 does not work, try 1.0.3
 tar xzvf opus-1.3.1.tar.gz
@@ -156,7 +156,7 @@ make distclean
 
 # libogg - Ogg bitstream library. Required by libtheora and libvorbis.
 echo "Downloading 'libogg' ..."
-cd $sources_path
+cd $SOURCES_PATH
 wget http://downloads.xiph.org/releases/ogg/libogg-1.3.5.tar.gz   # if ver 1.3.5 does not work, try 1.3.1
 tar xzvf libogg-1.3.5.tar.gz
 cd libogg-1.3.5
@@ -167,7 +167,7 @@ make distclean
 
 # libvorbis - Vorbis audio encoder. Requires libogg.
 echo "Downloading 'libvorbis' ..."
-cd $sources_path
+cd $SOURCES_PATH
 wget http://downloads.xiph.org/releases/vorbis/libvorbis-1.3.7.tar.gz     # if ver 1.3.7 does not work, try 1.3.3
 tar xzvf libvorbis-1.3.7.tar.gz
 cd libvorbis-1.3.7
@@ -177,15 +177,14 @@ sudo make install
 make distclean
 
 # libvpx - VP8/VP9 video encoder.
-echo; echo; echo; echo "*************** Installing 'libvpx' ***************"; echo
-cd $sources_path
+echo "Downloading 'libvpx' ..."
+cd $SOURCES_PATH
 git clone --depth 1 https://chromium.googlesource.com/webm/libvpx
 cd libvpx
 ./configure --prefix="$HOME/ffmpeg_build" --disable-examples
 make
 sudo make install
 make clean
-
 
 # libfreetype - Font rendering library. Required for the drawtext video filter.
 #echo; echo; echo; echo "*************** Installing 'libfreetype' ***************"; echo
