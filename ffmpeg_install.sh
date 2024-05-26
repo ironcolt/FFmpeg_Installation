@@ -9,10 +9,10 @@
 INSTALL="sudo dnf install -y "
 LOG_PREFIX="installation_errors"
 LOG_DATE=$(date +%y%m%d-%H%M)
-PATH_DIR="/home/$USER/Downloads/FFmpeg"
-SOURCES_PATH=$PATH_DIR"/Sources"
-LOG_PATH=$PATH_DIR"/Logs"
-LOG_NAME="$LOG_PATH/$LOG_PREFIX_$LOG_DATE"
+PATH_DIR="/home/potro/Downloads/FFmpeg"
+SOURCES_PATH="$PATH_DIR"/Sources
+LOGS_PATH="$PATH_DIR"/Logs
+LOG_NAME="$LOGS_PATH"/"$LOG_PREFIX"_"$LOG_DATE"
 install_error=0
 
 
@@ -27,6 +27,7 @@ function App_install {
 	app_name=$1; echo "Installing \"$app_name\" ..."; echo
 	$INSTALL $1; error=$( echo $? )
 	if [ $error -ne 0 ]; then install_error=1
+		chown potro:potro $LOG_NAME
 	    echo; echo "ERRORS found when installing \"$app_name\""; echo; echo
 	    echo >> $LOG_NAME; echo "ERRORS found when installing \"$app_name\"" >> $LOG_NAME; echo >> $LOG_NAME; echo >> $LOG_NAME
 	fi
@@ -39,31 +40,36 @@ if [ !$SOURCES_PATH ]; then
     mkdir -p $SOURCES_PATH
 fi
 
+if [ !$LOGS_PATH ]; then
+    mkdir -p $LOGS_PATH
+fi
+sudo chown potro:potro $SOURCES_PATH $LOGS_PATH
+
 pushd "$SOURCES_PATH" 1> /dev/null
 
 clear; echo -e "\t\t\t\tInstalliing FFmpeg\n"
-Exit
-<< comment
+
 # Installing needed dependencies
-echo; echo; echo; echo "*************** Installing needed dependencies ***************"; echo; echo
+#echo; echo; echo;
+echo "Installing needed dependencies ..."; echo; echo
 dependencies="autoconf automake bzip2 bzip2-devel cmake gcc gcc-c++ git libtool make nasm pkgconfig zlib-devel libass-devel dirac-devel faac-devel lame-devel opencv-devel openjpeg-devel  gsm-devel  xvidcore-devel"
 
 for app in $dependencies; do
-     install_app $app
+     App_install $app
 done
 
-
 # NASM - An assembler used by some libraries. Highly recommended or your resulting build may be very slow.
-echo; echo; echo; echo "*************** Installing 'NASM' ***************"; echo
-cd $sources_path
-curl -O -L https://www.nasm.us/pub/nasm/releasebuilds/2.15.05/nasm-2.15.05.tar.bz2
-tar xjvf nasm-2.15.05.tar.bz2
-cd nasm-2.15.05
+#echo; echo; echo; echo "*************** Installing 'NASM' ***************"; echo
+echo "Downloading 'NASM' ..."
+cd $SOURCES_PATH
+curl -O -L https://www.nasm.us/pub/nasm/releasebuilds/2.16.03/nasm-2.16.03.tar.bz2
+tar xjvf nasm-2.16.03.tar.bz2
+cd nasm-2.16.03
 ./autogen.sh
 ./configure --prefix="$HOME/ffmpeg_build" --bindir="$HOME/bin"
 make
 sudo make install
-
+Exit
 
 # Yasm - is an assembler used by x264 and FFmpeg
 echo; echo; echo; echo "*************** Installing 'Yasm' ***************"; echo
@@ -282,8 +288,7 @@ git pull
 # Then run ./configure, make, and make install as shown in the Install FFmpeg section
 comment
 
-
-
 clear
-echo $INSTALL $LOG_PREFIX $LOG_DATE $PATH_DIR $SOURCES_PATH $LOG_PATH $LOG_NAME $install_error
+echo $INSTALL $LOG_PREFIX $LOG_DATE $PATH_DIR $SOURCES_PATH $LOGS_PATH $LOG_NAME $install_error
+ls -hal /home/potro/Downloads/FFmpeg/
 Exit
