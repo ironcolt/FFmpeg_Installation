@@ -59,7 +59,6 @@ done
 
 << 'COMMENT'
 # NASM - An assembler used by some libraries. Highly recommended or your resulting build may be very slow.
-#echo; echo; echo; echo "*************** Installing 'NASM' ***************"; echo
 echo "Downloading 'nasm' ..."
 cd $SOURCES_PATH
 curl -O -L https://www.nasm.us/pub/nasm/releasebuilds/2.15.05/nasm-2.15.05.tar.bz2
@@ -72,7 +71,6 @@ sudo make install
 COMMENT
 
 # Yasm - is an assembler used by x264 and FFmpeg
-#echo; echo; echo; echo "*************** Installing 'Yasm' ***************"; echo
 echo "Downloading 'yasm' ..."
 cd $sources_path
 curl -O http://www.tortall.net/projects/yasm/releases/yasm-1.3.0.tar.gz
@@ -84,15 +82,17 @@ make
 sudo make install
 make distclean
 . ~/.bash_profile
-Exit
 
 # x264 - H.264 is a video encoder.
-echo; echo; echo; echo "*************** Installing 'x264' ***************"; echo
+echo "Downloading 'h264' ..."
 cd $sources_path
-if [[ -d "x264" ]]; then
+
+if [ -d "x264" ]; then
     rm -fr "x264"
 fi
-git clone --branch stable --depth 1 https://code.videolan.org/videolan/x264.git     # si marca algún problema, dejarlo, ya está la versión de la distro
+
+git clone --branch stable --depth 1 https://code.videolan.org/videolan/x264.git
+# si marca algún problema, dejarlo, ya está la versión de la distro
 cd x264
 PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig"
 ./configure --prefix="$HOME/ffmpeg_build" --bindir="$HOME/bin" --enable-static
@@ -100,7 +100,6 @@ PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig"
 make
 sudo make install
 make distclean
-
 
 # libx265 - H.265/HEVC video encoder.
 echo; echo; echo; echo "*************** Installing 'x265' ***************"; echo
