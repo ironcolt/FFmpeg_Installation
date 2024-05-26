@@ -130,7 +130,7 @@ sudo make install
 make distclean
 
 # libmp3lame - is an MP3 audio encoder.
-echo; echo; echo; echo "*************** Installing 'libmp3lame' ***************"; echo
+echo "Downloading 'libmp3lame' ..."
 cd $sources_path
 curl -L -O https://sourceforge.net/projects/lame/files/lame/3.100/lame-3.100.tar.gz     # if ver 3.100 does not work, try 3.99
 tar xzvf lame-3.100.tar.gz
@@ -140,7 +140,6 @@ cd lame-3.100
 make
 sudo make install
 make distclean
-
 
 # libopus - Opus audio decoder and encoder.
 echo; echo; echo; echo "*************** Installing 'libopus' ***************"; echo
@@ -262,7 +261,7 @@ hash -d ffmpeg
 #hash -r
 . ~/.bash_profile
 
-<< comment
+<< 'comment'
 Updating
 rm -rf ~/ffmpeg_build ~/bin/{ffmpeg,ffprobe,ffserver,lame,vsyasm,x264,yasm,ytasm}
 # yum install autoconf automake gcc gcc-c++ git libtool make nasm pkgconfig zlib-devel
@@ -295,4 +294,3 @@ comment
 clear
 echo $INSTALL $LOG_PREFIX $LOG_DATE $PATH_DIR $SOURCES_PATH $LOGS_PATH $LOG_NAME $install_error
 ls -hal /home/potro/Downloads/FFmpeg/
-Exit
